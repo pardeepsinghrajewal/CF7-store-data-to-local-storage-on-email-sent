@@ -2,6 +2,7 @@ jQuery( document ).ready(function()
 {
   wcContactPage();
 });
+
 function wcContactPage()
 {
   /** Get all contact forms **/
@@ -13,18 +14,18 @@ function wcContactPage()
     if(data != null && typeof data === 'object')
     {
       /** Get current form **/
-      let form = document.querySelector('#'+cf7Form.id);
+      let form = document.querySelector('#'+cf7Form.id); 
       if(form != null && typeof form === 'object')
       {
         /** Get current form elements **/
-        let formInputs = form.querySelectorAll('input,textarea');
+        let formInputs = form.querySelectorAll('input,textarea,select');
         if(formInputs != null && typeof formInputs === 'object')
         {
-          formInputs.forEach(function(element){
+          formInputs.forEach(function(element)
+          {
             if(element != null && element.type != 'hidden' && element.type != 'submit')
             {
-              /** Set class for each element **/
-              let wcClass = 'wc-'+element.name;
+              let wcClass = 'wc-'+element.name.replace(/[^a-zA-Z0-9]/g, "");
               element.classList.add(wcClass);
             }
           });
@@ -36,8 +37,16 @@ function wcContactPage()
           if(element[0] != null && typeof element[0] === 'string' &&
               element[1] != null && typeof element[1] === 'string' )
           {            
-            let ele = form.querySelector('.wc-'+element[0]);
-            ele.value = element[1];
+            let ele = form.querySelector('.wc-'+element[0].replace(/[^a-zA-Z0-9]/g, ""));
+            if(ele != null && typeof ele === 'object')
+            {
+              ele.value = element[1];
+            }
+            else
+            {
+              /** Element that was not found in ant special case! **/
+              console.log('.wc-'+element[0]);
+            }
           }
         });
       }
